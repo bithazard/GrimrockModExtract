@@ -3,11 +3,11 @@ Grimrock Mod Extract
 Small tool that is capable of extracting mod files (usually .dat file ending) for the game [Legend of Grimrock 2](http://www.grimrock.net) from Almost Human. The extracted files can then be opened with the Legend of Grimrock 2 Editor.
 
 ### Requirements
-* Only Java is required to run the program
+* Only Java (>= 11) is required to run the program
 
 ### Execution
 Open a command prompt and execute:  
-``java -jar GrimrockModExtract-1.0 <source file> <target directory>``
+``java -jar GrimrockModExtract-1.1.jar <source file> <target directory>``
 
 Make sure when you are on Windows and use quotes around the target directory, that you don't have a backslash before the closing quote. Windows will otherwise pass the (escaped) quotation mark as part of the parameter. Alternatively you can just use forward slashes instead.
 

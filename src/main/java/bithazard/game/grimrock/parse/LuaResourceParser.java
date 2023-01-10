@@ -9,7 +9,7 @@ import org.luaj.vm2.ast.TableField;
 import org.luaj.vm2.ast.Visitor;
 import org.luaj.vm2.parser.LuaParser;
 import org.luaj.vm2.parser.ParseException;
-import org.luaj.vm2.parser.TokenMgrError;
+import org.luaj.vm2.parser.TokenMgrException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -49,7 +49,6 @@ public final class LuaResourceParser {
 
     private static final BiFunction<Exp, ErrorCollector, Collection<String>> MULTI_VALUE_TABLE_FIELD_PARSER = (exp, errorCollector) -> {
         if (exp instanceof TableConstructor) {
-            @SuppressWarnings("unchecked")
             List<TableField> tableFields = ((TableConstructor)exp).fields;
             return parseTableFields(tableFields);
         }
@@ -63,7 +62,6 @@ public final class LuaResourceParser {
             return Set.of(((Exp.Constant)unwrappedExp).value.toString());
         }
         if (exp instanceof TableConstructor) {
-            @SuppressWarnings("unchecked")
             List<TableField> tableFields = ((TableConstructor)exp).fields;
             return parseTableFields(tableFields);
         }
@@ -173,7 +171,7 @@ public final class LuaResourceParser {
         //LuaParser throws a TokenMgrError if an input ends with a comment (--), so we simply add a newline to the end
         try (BOMInputStream bomInputStream = new BOMInputStream(inputStream, false);
             ByteArrayInputStream newLineInputStream = new ByteArrayInputStream(NEWLINE_BYTES)) {
-            LuaParser parser = new LuaParser(new SequenceInputStream(bomInputStream, newLineInputStream), "UTF-8");
+            LuaParser parser = new LuaParser(new SequenceInputStream(bomInputStream, newLineInputStream), StandardCharsets.UTF_8);
             Chunk chunk = parser.Chunk();
 
             chunk.accept(new Visitor() {
@@ -193,7 +191,6 @@ public final class LuaResourceParser {
                 @Override
                 public void visit(Exp.MethodCall methodCall) {
                     super.visit(methodCall);
-                    @SuppressWarnings("unchecked")
                     List<Exp> methodArgs = methodCall.args.exps;
                     if (methodArgs == null) {
                         return;
@@ -208,7 +205,6 @@ public final class LuaResourceParser {
                 @Override
                 public void visit(Exp.FuncCall funcCall) {
                     super.visit(funcCall);
-                    @SuppressWarnings("unchecked")
                     List<Exp> functionArgs = funcCall.args.exps;
                     if (functionArgs == null) {
                         return;
@@ -229,7 +225,7 @@ public final class LuaResourceParser {
             });
         } catch (ParseException e) {
             errorCollector.addError("Parse failed: " + e.getMessage(), e.currentToken);
-        } catch (TokenMgrError e) {
+        } catch (TokenMgrException e) {
             errorCollector.addError("Parsing error: " + e.getMessage());
         } catch (IOException e) {
             errorCollector.addError("Read error: " + e.getMessage());

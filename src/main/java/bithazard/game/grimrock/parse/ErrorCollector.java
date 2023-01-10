@@ -61,7 +61,7 @@ public class ErrorCollector {
         @Override
         public String toString() {
             if (position == null) {
-                return "(" + filename + ")" + message;
+                return "(" + filename + ") " + message;
             }
             return "(" + filename + ":" + position.getLineNumber() + ":" + position.getColumnNumber() + ") " + message;
         }

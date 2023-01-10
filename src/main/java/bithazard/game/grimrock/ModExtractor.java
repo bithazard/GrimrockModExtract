@@ -57,7 +57,7 @@ public class ModExtractor {
         File targetPathWithModDir = new File(targetPath, modName);
         Files.createDirectories(targetPathWithModDir.toPath());
 
-        File editorFile = new File(targetPath, modName + ".dungeon_editor");
+        File editorFile = new File(targetPathWithModDir, modName + ".dungeon_editor");
         BufferedWriter editorFileWriter = new BufferedWriter(new FileWriter(editorFile));
         modExtractor.writeEditorFile(modInfo, editorFileWriter);
         System.out.println("Extracting files...");

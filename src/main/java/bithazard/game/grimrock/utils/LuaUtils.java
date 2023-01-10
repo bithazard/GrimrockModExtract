@@ -53,7 +53,7 @@ public final class LuaUtils {
         if (exp instanceof Exp.Constant) {
             Exp.Constant constant = (Exp.Constant)exp;
             if (constant.value instanceof LuaString) {
-                return "\"" + constant.value.toString() + "\"";
+                return "\"" + constant.value + "\"";
             }
             return constant.value.toString();
         }
@@ -65,7 +65,6 @@ public final class LuaUtils {
         if (exp instanceof Exp.MethodCall) {
             Exp.MethodCall methodCall = (Exp.MethodCall)exp;
             String lhs = expToString(methodCall.lhs);
-            @SuppressWarnings("unchecked")
             List<Exp> exps = methodCall.args.exps != null ? methodCall.args.exps : Collections.emptyList();
             String methodArgsString = exps.stream().map(LuaUtils::expToString).collect(Collectors.joining(", "));
             return lhs + ":" + methodCall.name + "(" + methodArgsString + ")";
@@ -73,7 +72,6 @@ public final class LuaUtils {
         if (exp instanceof Exp.FuncCall) {
             Exp.FuncCall funcCall = (Exp.FuncCall)exp;
             String lhs = expToString(funcCall.lhs);
-            @SuppressWarnings("unchecked")
             List<Exp> exps = funcCall.args.exps != null ? funcCall.args.exps : Collections.emptyList();
             String functionArgsString = exps.stream().map(LuaUtils::expToString).collect(Collectors.joining(", "));
             return lhs + "(" + functionArgsString + ")";
@@ -98,7 +96,6 @@ public final class LuaUtils {
         }
         if (exp instanceof TableConstructor) {
             TableConstructor tableConstructor = (TableConstructor)exp;
-            @SuppressWarnings("unchecked")
             List<TableField> fields = tableConstructor.fields;
             List<String> tableFields = new ArrayList<>();
             for (TableField field : fields) {

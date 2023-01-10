@@ -19,7 +19,8 @@ public final class FileUtils {
         MODEL("MDL1"),
         SOUND("RIFF"),
         OGG_VORBIS("OggS"),
-        TEXTURE("DDS ");
+        TEXTURE("DDS "),
+        CINEMATIC("DKIF");
 
         private final String magicNumber;
 
